@@ -143,5 +143,10 @@ router.get('/verifyOtp',userController.verifyForgotOTP)
 
 router.patch('/changepassword',userController.changePassword)
 
+
+
+
+
+
 module.exports=router
 // >>>>>>> 9b9590f75b470d47ac41c6301e4d608776ebab8e

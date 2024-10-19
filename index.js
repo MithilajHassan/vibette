@@ -48,11 +48,19 @@ const io = socketIo(server, {
 // Configure Socket.IO
 socketIo_Config(io);
 
+
+app.set('view-engine', 'ejs')
+
 // Apply routes
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/chats", chatRouter);
+
+app.get('/sample',(req, res) => {
+    console.log('health serverr connected');
+    
+})
 
 // Define the listening port
 const port = process.env.LISTENING_PORT || 7002;
