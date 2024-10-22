@@ -94,7 +94,7 @@ const verifyOTP = async (req, res) => {
 
 const getAllUsers = async(req,res)=>{
   try {
-    const limit=5;
+    const limit=10;
     const data =await userHelper.getAllUsers(limit);
     res.status(200).json({users:data});
   } catch (error) {
