@@ -1,16 +1,16 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import { Schema, model } from 'mongoose';
+
 
 const ConnectionSchema = new Schema({
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "user",
     required: true,
   },
   followers: {
     type: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "user",
       },
     ],
@@ -19,7 +19,7 @@ const ConnectionSchema = new Schema({
   following: {
     type: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "user",
       }
     ],
@@ -28,7 +28,7 @@ const ConnectionSchema = new Schema({
   requested: {
     type: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "user",
       }
     ],
@@ -36,4 +36,4 @@ const ConnectionSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model("connection", ConnectionSchema);
+export default model("connection", ConnectionSchema);

@@ -1,11 +1,11 @@
 const Post = require('../models/postModel');
-const Connection = require('../models/connectionModel');
-const User = require('../models/userModel')
+const Connection = require('../models/connectionModel').default;
+const User = require('../models/userModel').default
 const Report = require('../models/reportsModel')
-const Comment = require('../models/commentModel');
-const {setNotification} = require('../utils/noficationSetter')
+const Comment = require('../models/commentModel').default;
+const {setNotification} = require('../utils/noficationSetter').default
 const mongoose = require('mongoose'); 
-const Saved = require('../models/savedPostModal')
+const Saved = require('../models/savedPostModal').default
 
 
 // @desc    Add New Post

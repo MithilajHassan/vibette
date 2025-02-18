@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const nodemon = require('nodemon');
+import { connect as _connect } from 'mongoose';
+import nodemon from 'nodemon';
 // @desc    Mongoose configuration
 // @file   < Config >
 // @access  Private
@@ -7,7 +7,7 @@ const nodemon = require('nodemon');
 
 const connect = async() => {
     try {
-        await mongoose.connect(process.env.MONGO_URL)
+        await _connect(process.env.MONGO_URL)
         console.log('mongoDB is connected');
     } catch (error) {
         console.log(error);
@@ -15,5 +15,5 @@ const connect = async() => {
     }
 }
 
-module.exports = connect;
+export default connect;
 

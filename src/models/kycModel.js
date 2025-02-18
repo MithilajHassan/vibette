@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
 // Define the schema for KYC data
-const KYCSchema = new mongoose.Schema({
+const KYCSchema = new Schema({
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "user",
         required: true
     },  
@@ -41,6 +41,6 @@ const KYCSchema = new mongoose.Schema({
 });
 
 // Create a model for KYC data using the schema
-const KYC = mongoose.model('KYC', KYCSchema);
+const KYC = model('KYC', KYCSchema);
 
-module.exports = KYC;
+export default KYC;

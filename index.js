@@ -1,20 +1,19 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const http = require('http');
-const socketIo = require('socket.io');
-const connect = require('./src/config/mongoose');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const socketIo_Config = require('./src/services/socketIo'); // Import socketIo_Config
+import express, { json, urlencoded } from 'express';
+import { config } from 'dotenv';
+// dotenv configuration
+config();
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import connect from './src/config/mongoose.js';
+import cors from 'cors';
+import socketIo_Config from './src/services/socketIo.js'; // Import socketIo_Config
 
 // Importing Routes
-const userRouter = require('./src/routes/userRouter');
-const postRouter = require('./src/routes/postRouter');
-const adminRouter = require('./src/routes/adminRouter');
-const chatRouter = require('./src/routes/chatRouter');
+import userRouter from './src/routes/userRouter.js';
+// import postRouter from './src/routes/postRouter.js';
+// import adminRouter from './src/routes/adminRouter.js';
+// import chatRouter from './src/routes/chatRouter.js';
 
-// dotenv configuration
-dotenv.config();
 
 // MongoDB configuration
 connect();
@@ -30,15 +29,15 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(json());
+app.use(urlencoded({ extended: true }));
 
 // Create HTTP server
-const server = http.createServer(app);
+const server = createServer(app);
 
 
 // Initialize Socket.IO with the HTTP server
-const io = socketIo(server, {
+const io = new Server(server, {
   cors: {
     origin: "*", // Allow requests from any origin
     methods: ["GET", "POST"] // Allow only GET and POST requests
@@ -48,18 +47,15 @@ const io = socketIo(server, {
 // Configure Socket.IO
 socketIo_Config(io);
 
-
-app.set('view-engine', 'ejs')
-
 // Apply routes
 app.use("/api/users", userRouter);
-app.use("/api/posts", postRouter);
-app.use("/api/admin", adminRouter);
-app.use("/api/chats", chatRouter);
+// app.use("/api/posts", postRouter);
+// app.use("/api/admin", adminRouter);
+// app.use("/api/chats", chatRouter);
 
-app.get('/sample',(req, res) => {
-    console.log('health serverr connected');
-    
+app.get('/sample', (req, res) => {
+  console.log('health server connected');
+
 })
 
 // Define the listening port
@@ -67,5 +63,5 @@ const port = process.env.LISTENING_PORT || 7002;
 
 // Start the server
 server.listen(port, () => {
-    console.log(`The server is listening on: http://localhost:${port}`);
+  console.log(`The server is listening on: http://localhost:${port}`);
 });

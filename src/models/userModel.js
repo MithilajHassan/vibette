@@ -1,21 +1,12 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const { Schema, model } = mongoose;
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const userSchema = new Schema({
-  userName: {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 4,
-    maxlength: 30,
-    set: function (value) {
-      return value.toLowerCase();
-    },
-  },
   name:{
     type: String,
+    required: true,
     trim: true,
   },
   email: {
@@ -83,4 +74,4 @@ const userSchema = new Schema({
 });
 
 
-module.exports = model('user', userSchema);
+export default model('user', userSchema)

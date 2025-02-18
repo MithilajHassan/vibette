@@ -1,13 +1,13 @@
 const bcrypt = require('bcryptjs')
 const saltRounds = 10; //setting salt rounds
-const generateJwt = require('../services/jwt')
-const User = require('../models/userModel')
+const generateJwt = require('../services/jwt').default
+const User = require('../models/userModel').default
 const Reports = require('../models/reportsModel');
-const Comment = require('../models/commentModel');
+const Comment = require('../models/commentModel').default;
 const Post = require('../models/postModel');
-const KYC  = require('../models/kycModel')
-const {setNotification} = require('../utils/noficationSetter')
-const Connection = require('../models/connectionModel');
+const KYC  = require('../models/kycModel').default
+const {setNotification} = require('../utils/noficationSetter').default
+const Connection = require('../models/connectionModel').default;
 const { post } = require('../routes/userRouter');
 // @desc    Login admin
 // @route   POST /admin/login

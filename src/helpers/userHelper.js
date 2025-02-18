@@ -1,17 +1,15 @@
-const bcrypt = require('bcryptjs')
+import bcrypt from 'bcryptjs';
 const saltRounds = 10; //setting salt rounds
-const User = require('../models/userModel');
-
-const sendEmail = require('../services/nodeMailer')
-const generateToken = require('../services/jwt');
-const Verify = require('../models/verifyModel')
-const verifyOtp = require('../services/emailVerification')
-const Connection = require('../models/connectionModel')
-const Razorpay = require("razorpay");
-require("dotenv").config();
-const Notifications = require('../models/notificationModel')
-const { setNotification } = require('../utils/noficationSetter')
-const KYC = require('../models/kycModel')
+import User from '../models/userModel.js';
+import sendEmail from '../services/nodeMailer.js';
+import generateToken from '../services/jwt.js';
+import Verify from '../models/verifyModel.js';
+import verifyOtp from '../services/emailVerification.js';
+import Connection from '../models/connectionModel.js';
+import Razorpay from "razorpay";
+import Notification from '../models/notificationModel.js';
+import { setNotification } from '../utils/noficationSetter.js';
+import KYC from '../models/kycModel.js';
 
 
 
@@ -55,31 +53,17 @@ const sendVerifyEmail = (data) => {
               message: "You already have an account.",
             });
           } else {
-            // Check if the username is already taken
-            User.findOne({ userName: data.userName })
-              .then(async (user) => {
-                if (user) {
-                  reject({
-                    status: 401,
-                    message: "The username is already taken.",
-                  });
-                } else {
-                  const verify = await Verify.findOne({ email: data.email });
-                  if (verify && verify.updatedAt && (Date.now() - verify.updatedAt.getTime()) < 60000) {
-                    reject({
-                      status: 401,
-                      message: "OTP already sent within the last one minute",
-                    });
-                  } else {
-                    // If everything is fine, proceed with sending the email
-                    const response = await sendEmail(data);
-                    resolve(response);
-                  }
-                }
-              })
-              .catch((error) => {
-                reject(error);
+            const verify = await Verify.findOne({ email: data.email });
+            if (verify && verify.updatedAt && (Date.now() - verify.updatedAt.getTime()) < 60000) {
+              reject({
+                status: 401,
+                message: "OTP already sent within the last one minute",
               });
+            } else {
+              // If everything is fine, proceed with sending the email
+              const response = await sendEmail(data);
+              resolve(response);
+            }
           }
         })
         .catch((error) => {
@@ -96,8 +80,8 @@ const sendVerifyEmail = (data) => {
   });
 };
 
-const getAllUsers = async(limit)=>{
-  return new Promise(async(resolve,reject)=>{
+const getAllUsers = async (limit) => {
+  return new Promise(async (resolve, reject) => {
     try {
       const users = await User.find().limit(limit);
       resolve(users);
@@ -118,12 +102,10 @@ const getAllUsers = async(limit)=>{
 const verifyEmailOtp = (email, token) => {
   return new Promise((resolve, reject) => {
     try {
-      console.log('here');
       verifyOtp(email, token)
-        .then(async (response) => {
+        .then((response) => {
           User.findOne({ email: email })
             .then((user) => {
-              console.log('inside');
               resolve(user);
             })
             .catch((error) => {
@@ -218,7 +200,7 @@ const login = async (email, password) => {
       if (existingUser.blocked) {
         reject({
           status: 401,
-          error_code: 'USER_IS_BLocked',
+          error_code: 'USER_IS_BLOCKED',
           message: 'Your Account is Blocked'
         })
       }
@@ -248,7 +230,7 @@ const login = async (email, password) => {
         verified: existingUser.verified,
         role: existingUser.role,
         backGroundImage: existingUser.backGroundImage,
-        isPrivate:existingUser.isPrivate
+        isPrivate: existingUser.isPrivate
       }
 
       // If user and password match, resolve with the user data
@@ -338,11 +320,11 @@ const
   }
 
 
-const mongoose = require('mongoose');
+import { Types } from 'mongoose';
 const fetchUsersHelp = async (userId, page, limit, searchQuery = '') => {
   return new Promise(async (resolve, reject) => {
     try {
-      const connection = await Connection.findOne({ userId: userId });
+      const connection = await findOne({ userId: userId });
       let followingIds = [];
       if (connection && connection.following) {
         followingIds = connection.following;
@@ -350,7 +332,7 @@ const fetchUsersHelp = async (userId, page, limit, searchQuery = '') => {
 
       // Convert userId to ObjectId if it's a string
       if (typeof userId === 'string') {
-        userId = new mongoose.Types.ObjectId(userId);
+        userId = new Types.ObjectId(userId);
       }
 
       let totalCount;
@@ -530,7 +512,7 @@ const unFollowHelper = (userId, followeeId) => {
 const getFollowing = (userId, page, limit) => {
   return new Promise((resolve, reject) => {
     try {
-      Connection.findOne({ userId: userId })
+      findOne({ userId: userId })
         .populate('following')
         .then(async (userConnection) => {
           if (!userConnection) {
@@ -560,7 +542,7 @@ const getFollowing = (userId, page, limit) => {
 const getFollowers = (userId, page, limit) => {
   return new Promise((resolve, reject) => {
     try {
-      Connection.findOne({ userId: userId })
+      findOne({ userId: userId })
         .populate('followers')
         .then(async (userConnection) => {
           if (!userConnection) {
@@ -601,7 +583,7 @@ const getUserById = (userId, ownId) => {
       }
 
 
-      const userConnection = await Connection.findOne({ userId: ownId });
+      const userConnection = await findOne({ userId: ownId });
 
 
 
@@ -613,7 +595,7 @@ const getUserById = (userId, ownId) => {
         following = true;
       }
 
-      const OtherUserConnection = await Connection.findOne({ userId: userId });
+      const OtherUserConnection = await findOne({ userId: userId });
       if (OtherUserConnection && OtherUserConnection.requested.includes(ownId)) {
         following = 'requested'
       }
@@ -682,7 +664,7 @@ const getRequested = async (userId) => {
   return new Promise(async (resolve, reject) => {
     try {
       // Step 1: Find the user's connections
-      const userConnection = await Connection.findOne({ userId: userId }).populate('requested')
+      const userConnection = await findOne({ userId: userId }).populate('requested')
 
       if (!userConnection) {
         resolve([]); // No connections found, return an empty array
@@ -711,7 +693,7 @@ const acceptRequest = async (userId, requestId) => {
       console.log(userId, requestId);
       console.log('insisnsinsinsin');
       // Step 1: Find the user's connections
-      const userConnection = await Connection.findOne({ userId: userId })
+      const userConnection = await findOne({ userId: userId })
 
       if (!userConnection) {
         reject({ message: "User connection not found" });
@@ -758,7 +740,7 @@ const rejectRequest = async (userId, requestId) => {
   return new Promise(async (resolve, reject) => {
     try {
       // Step 1: Find the user's connections
-      const userConnection = await Connection.findOne({ userId: userId });
+      const userConnection = await findOne({ userId: userId });
 
       if (!userConnection) {
         reject({ message: "User connection not found" });
@@ -829,7 +811,7 @@ const successPayment = (userId) => {
 
       const updatedUser = await User.findByIdAndUpdate(userId, { verified: true });
       await KYC.findOneAndUpdate({ userId: userId }, { paymentStatus: true })
-      await Notifications.findOneAndDelete({ userId: userId, type: 'accept' })
+      await Notification.findOneAndDelete({ userId: userId, type: 'accept' })
       if (!updatedUser) {
         throw new Error("Failed to update user's verified status");
       }
@@ -865,7 +847,7 @@ const removeVerify = (userId) => {
 const isFollowing = async (userId, followeeId) => {
   try {
     // Find the connection for the user
-    const userConnection = await Connection.findOne({ userId: userId });
+    const userConnection = await findOne({ userId: userId });
     if (!userConnection) {
       return false; // User's connection not found, meaning user is not following anyone
     }
@@ -885,8 +867,8 @@ const getAllNotifications = async (userId) => {
   }
 
   try {
-   
-    const notifications = await Notifications.find({ userId })
+
+    const notifications = await Notification.find({ userId })
       .sort({ createdAt: -1 })
       .populate('from')
       .populate({
@@ -896,7 +878,7 @@ const getAllNotifications = async (userId) => {
           skipInvalidIds: true // Skip populating if postId is not a valid ObjectId
         }
       });
-    await Notifications.updateMany({userId:userId},{$set:{isRead:true}})
+    await Notification.updateMany({ userId: userId }, { $set: { isRead: true } })
     return notifications;
   } catch (error) {
     console.error("Error while getting notifications:", error);
@@ -904,13 +886,13 @@ const getAllNotifications = async (userId) => {
   }
 };
 
-const getNotificationCount = async(userId)=>{
+const getNotificationCount = async (userId) => {
   if (!userId) {
     throw new Error("User ID is required");
   }
   try {
-   
-    const notificationCount = await Notifications.find({userId:userId,isRead:false}).countDocuments()
+
+    const notificationCount = await Notification.find({ userId: userId, isRead: false }).countDocuments()
     return notificationCount;
   } catch (error) {
     console.error("Error while getting notifications:", error);
@@ -955,11 +937,11 @@ const isKycSubmitted = async (userId) => {
 }
 
 
-const getCounts= async (userId)=> {
+const getCounts = async (userId) => {
   try {
-    const connection = await Connection.findOne({ userId }).exec();
+    const connection = await findOne({ userId }).exec();
     if (!connection) {
-       return null
+      return null
     }
 
     const followersCount = connection.followers.length;
@@ -973,25 +955,25 @@ const getCounts= async (userId)=> {
   }
 }
 
-const forgotPassWord =async (email)=>{
+const forgotPassWord = async (email) => {
   try {
-    const data ={
-      email:email
+    const data = {
+      email: email
     }
-    const user = await User.findOne({email:email})
+    const user = await User.findOne({ email: email })
     console.log(user);
-    if(user){
+    if (user) {
       const response = await sendEmail(data);
-      return { status: 200,response};
-    }else{
-      return  {
+      return { status: 200, response };
+    } else {
+      return {
         status: 404,
         error_code: "ACCOUNT_NOT_FOUND",
         message: "You have no account.",
       };
     }
-   
-    
+
+
   } catch (error) {
     console.error('Error while getting counts:', error);
     throw error;
@@ -1001,9 +983,9 @@ const forgotPassWord =async (email)=>{
 const verifyOTP = async (email, otp) => {
   try {
     const verify = await Verify.findOne({ email: email });
-    
+
     if (!verify) {
- return {
+      return {
         status: 404,
         error_code: "ACCOUNT_NOT_FOUND",
         message: "You have no account.",
@@ -1011,11 +993,11 @@ const verifyOTP = async (email, otp) => {
     }
 
 
-    
+
     if (verify.token === otp) {
-      return { email:email,status:true};
+      return { email: email, status: true };
     } else {
-      return { email:email,status:false};
+      return { email: email, status: false };
     }
   } catch (error) {
     console.error('Error while verifying OTP:', error);
@@ -1027,11 +1009,11 @@ const verifyOTP = async (email, otp) => {
   }
 };
 
-const changePassword = async (email,password) => {
+const changePassword = async (email, password) => {
   try {
-  
+
     const user = await User.findOne({ email: email });
-    
+
     if (!user) {
       throw {
         status: 404,
@@ -1057,7 +1039,7 @@ const changePassword = async (email,password) => {
   }
 };
 
-module.exports = {
+export {
   sendVerifyEmail,
   login,
   verifyEmailOtp,

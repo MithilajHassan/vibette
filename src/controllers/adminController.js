@@ -1,5 +1,5 @@
 const adminHelper = require('../helpers/adminHelper')
-const User = require('../models/userModel')
+const User = require('../models/userModel').default
 
 
 

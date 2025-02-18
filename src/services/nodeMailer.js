@@ -1,19 +1,16 @@
-const nodemailer = require('nodemailer');
-const Verify = require('../models/verifyModel')
+import { createTransport } from 'nodemailer';
+import Verify from '../models/verifyModel.js';
 
 async function sendEmail(data) {
     return new Promise(async (resolve, reject) => {
         try {
 
-              console.log(process.env.EMAIL, process.env.PASS);
             // Create a transporter
-            let transporter = nodemailer.createTransport({
-                // Configure your email service provider or SMTP server here
-                // Example configuration for Gmail:
+            let transporter = createTransport({
                 service: 'gmail',
                 auth: {
-                    user: process.env.EMAIL, // Your email address
-                    pass: process.env.PASS // Your password (or an app-specific password)
+                    user: process.env.EMAIL, 
+                    pass: process.env.PASS 
                 }
             });
              
@@ -27,8 +24,8 @@ async function sendEmail(data) {
 
             }else{
             verify = new Verify({
+                name: data.name,
                 email: data.email,
-                userName: data.userName,
                 phone:data.phone,
                 password:data.password,
                 token: token,
@@ -82,4 +79,4 @@ function generateOTP() {
 }
 
 
-module.exports = sendEmail
+export default sendEmail

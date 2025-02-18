@@ -1,4 +1,4 @@
-const Notifications = require('../models/notificationModel');
+import Notifications from '../models/notificationModel.js';
 
 // Function to set a new notification
 const setNotification = async (userId, from, fromUser, message,type,postId=null) => {
@@ -22,6 +22,6 @@ const setNotification = async (userId, from, fromUser, message,type,postId=null)
     }
 };
 
-module.exports = {
+export {
     setNotification
 };

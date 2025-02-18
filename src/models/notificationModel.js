@@ -1,21 +1,21 @@
-const mongoose = require("mongoose");
+import mongoose, { Types } from "mongoose";
 
 const { Schema, model } = mongoose;
 
 const notificationSchema = new Schema({
     userId: {
-        type: mongoose.Types.ObjectId,
+        type: Types.ObjectId,
         ref: "user",
         require: true,
     },
 
     postId: {
-        type: mongoose.Types.ObjectId,
+        type: Types.ObjectId,
         ref:"post"
     },
 
     from: {
-        type: mongoose.Types.ObjectId,
+        type: Types.ObjectId,
         ref: "user",
     },
 
@@ -44,4 +44,5 @@ notificationSchema.index({ createdAt: 1 }, { expireAfterSeconds: 259200 }); //3d
 
 const Notifications = model("notification", notificationSchema);
 
-module.exports = Notifications;
+export default Notifications;
+

@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model } from 'mongoose';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -37,4 +37,4 @@ const adminSchema = new Schema({
 
 const Admin = model("admin", adminSchema);
 
-module.exports = Admin;
+export default Admin;

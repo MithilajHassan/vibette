@@ -1,5 +1,3 @@
-
-
 const socketIo_Config = (io) => {
     let users = []; // Array to store connected users
     
@@ -124,5 +122,5 @@ const socketIo_Config = (io) => {
     });
 };
 
-module.exports = socketIo_Config;
+export default socketIo_Config;
 

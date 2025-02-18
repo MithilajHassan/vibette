@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose, { Types } from 'mongoose';
 const { Schema, model } = mongoose;
 
 const commentSchema = new Schema({
@@ -27,7 +27,7 @@ const commentSchema = new Schema({
     },
 
     parentId: {
-        type: mongoose.Types.ObjectId,
+        type: Types.ObjectId,
         ref: "comment"
     },
 
@@ -42,4 +42,4 @@ const commentSchema = new Schema({
 
 const Comment = model('comment', commentSchema);
 
-module.exports = Comment;
+export default Comment;

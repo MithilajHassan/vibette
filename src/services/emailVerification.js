@@ -1,6 +1,6 @@
-const Verify = require('../models/verifyModel')
-const User = require('../models/userModel')
-const bcrypt = require('bcryptjs')
+import Verify from '../models/verifyModel.js';
+import User from '../models/userModel.js';
+import bcrypt from 'bcryptjs';
 const saltRounds = 10; //setting salt rounds
 
 
@@ -54,12 +54,11 @@ const verifyOtp = (email, token) => {
 };
 
 
-  module.exports=verifyOtp
+  export default verifyOtp
   
 
   const registration = async (data) => {
     try {
-        console.log('Inside registration function');
         
         // Check if the user already exists with the provided email
         const existingEmailUser = await User.findOne({ email: data.email });
@@ -71,22 +70,12 @@ const verifyOtp = (email, token) => {
             };
         }
 
-        // Check if the user already exists with the provided username
-        const existingUsernameUser = await User.findOne({ userName: data.userName });
-        if (existingUsernameUser) {
-            throw {
-                status: 409,
-                error_code: 'USERNAME_TAKEN',
-                message: 'Username already in use',
-            };
-        }
-
         // Hash the password
         const hashedPassword = await bcrypt.hash(data.password, saltRounds);
 
         // Create a new user object
         const newUser = new User({
-            userName: data.userName,
+            name: data.name,
             email: data.email,
             password: hashedPassword,
             phone: data.phone,
