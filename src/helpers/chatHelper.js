@@ -1,5 +1,5 @@
-const Conversation = require('../models/conversationModel')
-const Message      = require('../models/messagesModel')
+import Conversation from '../models/conversationModel.js';
+import Message from '../models/messagesModel.js';
 
 
 const addConversation = (members, lastMessage, lastMessageTime) => {
@@ -195,7 +195,7 @@ const deleteMessage = async (messageId, deleteType, userId) => {
 
 
 
-module.exports ={ 
+export { 
     addConversation,
     getAllConversationsByUserId,
     addMessage,

@@ -1,40 +1,40 @@
-const express = require('express')
-const router = express.Router()
-const chatController = require('../controllers/chatController')
-const authMiddleware = require('../middleware/authMiddleware').default
+import { Router } from 'express';
+const router = Router()
+import { createConversation, getConversations, addMessage, getAllMessages, messageReaded, deleteMessage } from '../controllers/chatController.js';
+import { protect } from '../middleware/authMiddleware.js';
 
 
 // @desc    Create a new conversation
 // @route   POST /api/chats/conversation
 // @access  Protected
-router.post('/conversation', authMiddleware.protect, chatController.createConversation);
+router.post('/conversation', protect, createConversation);
 
 // @desc    Get all conversations
 // @route   GET /api/chats/conversation
 // @access  Protected
-router.get('/conversation', authMiddleware.protect, chatController.getConversations);
+router.get('/conversation', protect, getConversations);
 
 // @desc    Add a new message to a conversation
 // @route   POST /api/chats/message
 // @access  Protected
-router.post('/message', authMiddleware.protect, chatController.addMessage);
+router.post('/message', protect, addMessage);
 
 // @desc    Get all messages in a conversation
 // @route   GET /api/chats/message/:conversationId
 // @access  Protected
-router.get('/message/:conversationId', authMiddleware.protect, chatController.getAllMessages);
+router.get('/message/:conversationId', protect, getAllMessages);
 
 // @desc    Mark a message as read
 // @route   PATCH /api/chats/message/read/:conversationId/:readerId
 // @access  Protected
-router.patch('/message/read/:conversationId/:readerId', authMiddleware.protect, chatController.messageReaded);
+router.patch('/message/read/:conversationId/:readerId', protect, messageReaded);
 
 // @desc    Delete a message
 // @route   PATCH /api/chats/message/delete/:messageId/:type
 // @access  Protected
-router.patch('/message/delete/:messageId/:type', authMiddleware.protect, chatController.deleteMessage);
+router.patch('/message/delete/:messageId/:type', protect, deleteMessage);
 
 
 
 
-module.exports=router
+export default router

@@ -1,21 +1,21 @@
 
-const mongoose = require('mongoose');
+import mongoose, { Types } from 'mongoose';
 const { Schema, model } = mongoose;
 
 const messageSchema = new Schema({
     senderId: {
-        type: mongoose.Types.ObjectId,
+        type: Types.ObjectId,
         ref: "user",
         require: true,
     },
     recieverId: {
-        type: mongoose.Types.ObjectId,
+        type: Types.ObjectId,
         ref: "user",
         require: true,
     },
 
     conversationId: {
-        type: mongoose.Types.ObjectId,
+        type: Types.ObjectId,
         ref: "chatRoom",
         require: true,
     },
@@ -40,4 +40,4 @@ const messageSchema = new Schema({
 
 
 const Message = model('message', messageSchema);
-module.exports= Message
+export default Message

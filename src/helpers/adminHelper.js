@@ -1,14 +1,13 @@
-const bcrypt = require('bcryptjs')
+import bcrypt from 'bcryptjs';
 const saltRounds = 10; //setting salt rounds
-const generateJwt = require('../services/jwt').default
-const User = require('../models/userModel').default
-const Reports = require('../models/reportsModel');
-const Comment = require('../models/commentModel').default;
-const Post = require('../models/postModel');
-const KYC  = require('../models/kycModel').default
-const {setNotification} = require('../utils/noficationSetter').default
-const Connection = require('../models/connectionModel').default;
-const { post } = require('../routes/userRouter');
+import generateJwt from '../services/jwt.js';
+import User from '../models/userModel.js';
+import Report from '../models/reportsModel.js';
+import Comment from '../models/commentModel.js';
+import Post from '../models/postModel.js';
+import KYC from '../models/kycModel.js';
+import { setNotification } from '../utils/noficationSetter.js';
+import Connection from '../models/connectionModel.js';
 // @desc    Login admin
 // @route   POST /admin/login
 // @access  Public
@@ -72,10 +71,10 @@ const getAllReports = (page, limit) => {
     return new Promise((resolve, reject) => {
         try {
             let totalCount;
-            Reports.countDocuments({})
+            Report.countDocuments({})
                 .then(count => {
                     totalCount = count;
-                    return Reports.find({})
+                    return Report.find({})
                         .sort({ createdAt: -1 })
                         .populate('targetId')
                         .populate('reporterId')
@@ -106,7 +105,7 @@ const getAllReports = (page, limit) => {
 const takeAction = (targetId) => {
     return new Promise((resolve, reject) => {
         console.log(targetId);
-        Reports.updateMany({ targetId }, { actionTaken: true })
+        Report.updateMany({ targetId }, { actionTaken: true })
             .then(() => {
                 return Post.findByIdAndUpdate(targetId, { blocked: true });
             })
@@ -310,7 +309,7 @@ const getChartData = async (year) => {
 
         const usersMonthlyCounts = userCounts.map(({ month, count }) => ({ label: month, count }));
 
-        const reportCounts = await Reports.aggregate([
+        const reportCounts = await Report.aggregate([
             { $match: matchCondition },
             {
                 $group: {
@@ -394,7 +393,7 @@ ReportsMonthlyCounts.forEach(item => {
 }
 
   
-  module.exports = {
+  export {
     adminLogin,
     block_Unblock_User,
     getAllReports,

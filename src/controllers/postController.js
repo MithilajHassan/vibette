@@ -1,4 +1,4 @@
-const postHelper = require('../helpers/postHelper')
+import { addPost, getAllPosts, deletePost as _deletePost, updatePost, getPostByUserId as _getPostByUserId, getAllFolloweesPost as _getAllFolloweesPost, likePost as _likePost, unLikePost as _unLikePost, reportPost as _reportPost, addComment as _addComment, replyComment as _replyComment, fetchReplies as _fetchReplies, getAllComments as _getAllComments, deleteComment as _deleteComment, searchPostsByTags, explore_Post as _explore_Post, explorePost as _explorePost, getCommentCountForPost, savePost as _savePost, fetchSavedPost as _fetchSavedPost, removeSaved, removeSavedFlutter, fetchSavedPostFlutter as _fetchSavedPostFlutter, fetchTaggedPosts, fetchLiked as _fetchLiked } from '../helpers/postHelper.js';
 
 
 // @desc    post user post
@@ -8,7 +8,7 @@ const addUserPost =async(req,res)=>{
     try {
         const postData= req.body;
      
-   postHelper.addPost(postData)
+   addPost(postData)
       .then((response)=>{
         res.status(200).json({...response})
       })
@@ -27,7 +27,7 @@ const getallpost = async(req,res)=>{
     try {
         const userId= req.user.id;
         
-   postHelper.getAllPosts(userId)
+   getAllPosts(userId)
       .then((response)=>{
         res.status(200).json(response)
       })
@@ -46,7 +46,7 @@ const getallpost = async(req,res)=>{
  const deletePost = (req, res) => {
   try {
     const { postId } = req.params;
-    postHelper.deletePost(postId)
+    _deletePost(postId)
       .then((response) => {
         res.status(200).send(response);
       })
@@ -66,7 +66,7 @@ const editPost = (req, res) => {
     const { postId } = req.params;
     const data = req.body;
 
-    postHelper.updatePost(postId,data)
+    updatePost(postId,data)
     .then((response) => {
       res.status(200).send(response);
     })
@@ -86,7 +86,7 @@ const getPostByUserId =(req,res)=>{
     console.log('haai');
     const {userId} = req.params;
     console.log(userId);
-    postHelper.getPostByUserId(userId)
+    _getPostByUserId(userId)
     .then((response) => {
       res.status(200).send(response);
     })
@@ -103,7 +103,7 @@ const getAllFolloweesPost =(req,res)=>{
     const {page,pageSize} =req.query
     const userId = req.user.id
     console.log('insideee');
-    postHelper.getAllFolloweesPost(userId,page,pageSize)
+    _getAllFolloweesPost(userId,page,pageSize)
     .then((response) => {
       res.status(200).send(response);
     })
@@ -120,7 +120,7 @@ const likePost =async(req,res)=>{
   try {
     const userId = req.user.id;
     const {postId} = req.params
-    postHelper.likePost(userId,postId)
+    _likePost(userId,postId)
     .then((response) => {
       res.status(200).send(response);
     })
@@ -136,7 +136,7 @@ const unLikePost =async(req,res)=>{
   try {
     const userId = req.user.id;
     const {postId} = req.params
-    postHelper.unLikePost(userId,postId)
+    _unLikePost(userId,postId)
     .then((response) => {
       res.status(200).send(response);
     })
@@ -152,7 +152,7 @@ const reportPost =async(req,res)=>{
   try {
     const data = req.body
     console.log(data);
-    postHelper.reportPost(data)
+    _reportPost(data)
     .then((response) => {
       res.status(200).send(response);
     })
@@ -167,7 +167,7 @@ const reportPost =async(req,res)=>{
 const addComment = async(req,res)=>{
   try {
     const data = req.body
-    postHelper.addComment(data)
+    _addComment(data)
     .then((response) => {
       res.status(200).send(response);
     })
@@ -183,7 +183,7 @@ const replyComment = async(req,res)=>{
   try {
     const data = req.body
     const {commentId} = req.params
-    postHelper.replyComment(commentId,data)
+    _replyComment(commentId,data)
     .then((response) => {
       res.status(200).send(response);
     })
@@ -198,7 +198,7 @@ const replyComment = async(req,res)=>{
 const fetchReplies = async(req,res)=>{
   try {
     const {commentId} = req.params
-    postHelper.fetchReplies(commentId)
+    _fetchReplies(commentId)
     .then((response) => {
       res.status(200).send(response);
     })
@@ -213,7 +213,7 @@ const fetchReplies = async(req,res)=>{
 const getAllComments = async(req,res)=>{
   try {
     const {postId} =  req.params
-    postHelper.getAllComments(postId)
+    _getAllComments(postId)
     .then((response) => {
       res.status(200).send(response);
     })
@@ -229,7 +229,7 @@ const deleteComment = async(req,res)=>{
   try{
     console.log('dele');
   const { commentId } =  req.params
-  postHelper.deleteComment(commentId)
+  _deleteComment(commentId)
   .then((response) => {
     res.status(200).send(response);
   })
@@ -245,7 +245,7 @@ const deleteComment = async(req,res)=>{
 const searchPost = async(req,res)=>{
   try {
     const {searchQuery} = req.query
-    postHelper.searchPostsByTags(searchQuery)
+    searchPostsByTags(searchQuery)
     .then((response) => {
       res.status(200).send(response);
     })
@@ -262,7 +262,7 @@ const searchPost = async(req,res)=>{
 const explore_Post = async(req,res)=>{
   try{
  
-  postHelper.explore_Post()
+  _explore_Post()
   .then((response) => {
     res.status(200).send(response);
   })
@@ -281,7 +281,7 @@ const explorePost = async(req,res)=>{
   try{
     const {page,pageSize} = req.query
     const userId = req.user.id
-  postHelper.explorePost(page,pageSize,userId)
+  _explorePost(page,pageSize,userId)
   .then((response) => {
     res.status(200).send(response);
   })
@@ -298,7 +298,7 @@ const getCommentCount = async(req,res)=>{
   
     const {postId} = req.params
    
-  postHelper.getCommentCountForPost(postId)
+  getCommentCountForPost(postId)
   .then((response) => {
   
     res.status(200).send(response);
@@ -318,7 +318,7 @@ const savePost= async(req,res)=>{
     const {postId} = req.params
     const userId = req.user.id
    
-  postHelper.savePost(postId,userId)
+  _savePost(postId,userId)
   .then((response) => {
   
     res.status(200).send(response);
@@ -337,7 +337,7 @@ const fetchSavedPost= async(req,res)=>{
   
     const userId = req.user.id
    
-  postHelper.fetchSavedPost(userId)
+  _fetchSavedPost(userId)
   .then((response) => {
   
     res.status(200).send(response);
@@ -356,7 +356,7 @@ const removeSavedPost= async(req,res)=>{
   
     const {savedId} = req.params
     
-  postHelper.removeSaved(savedId)
+  removeSaved(savedId)
   .then((response) => {
   
     res.status(200).send(response);
@@ -375,7 +375,7 @@ const removeSavedPostByPostId= async(req,res)=>{
   
     const {postId} = req.params
     
-  postHelper.removeSavedFlutter(postId)
+  removeSavedFlutter(postId)
   .then((response) => {
   
     res.status(200).send(response);
@@ -393,7 +393,7 @@ const fetchSavedPostFlutter= async(req,res)=>{
   
     const userId = req.user.id
    
-  postHelper.fetchSavedPostFlutter(userId)
+  _fetchSavedPostFlutter(userId)
   .then((response) => {
   
     res.status(200).send(response);
@@ -413,7 +413,7 @@ const fetchTaggedPost= async(req,res)=>{
   
     const {userId} = req.params
     
-  postHelper.fetchTaggedPosts(userId)
+  fetchTaggedPosts(userId)
   .then((response) => {
   
     res.status(200).send(response);
@@ -431,7 +431,7 @@ const fetchLiked= async(req,res)=>{
   
     const {postId} = req.params
     
-  postHelper.fetchLiked(postId)
+  _fetchLiked(postId)
   .then((response) => {
   
     res.status(200).send(response);
@@ -445,7 +445,7 @@ const fetchLiked= async(req,res)=>{
 }
 
 
-module.exports={
+export {
     addUserPost,
     getallpost,
     deletePost,

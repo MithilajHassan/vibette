@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+import mongoose, { Types } from 'mongoose';
 const { Schema, model } = mongoose;
 
 
 const reportSchema = new Schema({
 
     reporterId: {
-        type: mongoose.Types.ObjectId,
+        type: Types.ObjectId,
         ref: 'user',
         require: true
     },
@@ -21,7 +21,7 @@ const reportSchema = new Schema({
     },
 
     targetId: {
-        type: mongoose.Types.ObjectId,
+        type: Types.ObjectId,
         ref:'post',
         require: true
     },
@@ -38,4 +38,4 @@ const reportSchema = new Schema({
 
  const Report = model('report', reportSchema);
 
-module.exports= Report
+export default Report

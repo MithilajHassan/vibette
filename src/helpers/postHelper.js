@@ -1,11 +1,10 @@
-const Post = require('../models/postModel');
-const Connection = require('../models/connectionModel').default;
-const User = require('../models/userModel').default
-const Report = require('../models/reportsModel')
-const Comment = require('../models/commentModel').default;
-const {setNotification} = require('../utils/noficationSetter').default
-const mongoose = require('mongoose'); 
-const Saved = require('../models/savedPostModal').default
+import Post from '../models/postModel.js';
+import Connection from '../models/connectionModel.js';
+import User from '../models/userModel.js';
+import Report from '../models/reportsModel.js';
+import Comment from '../models/commentModel.js';
+import { setNotification } from '../utils/noficationSetter.js';
+import Saved from '../models/savedPostModal.js';
 
 
 // @desc    Add New Post
@@ -965,7 +964,7 @@ const fetchLiked =async (postId)=>{
 
 
 
-module.exports = {
+export {
     addPost,
     getAllPosts,
     deletePost,

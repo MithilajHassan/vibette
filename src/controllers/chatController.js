@@ -1,11 +1,11 @@
-const chatHelper = require('../helpers/chatHelper');
+import { addConversation, getAllConversationsByUserId, addMessage as _addMessage, getAllMessages as _getAllMessages, messageReaded as _messageReaded, deleteMessage as _deleteMessage } from '../helpers/chatHelper.js';
 
 
 
 const createConversation = async(req,res)=>{
     try {
       const {members,lastMessage,lastMessageTime} = req.body
-       chatHelper.addConversation(members,lastMessage,lastMessageTime)
+       addConversation(members,lastMessage,lastMessageTime)
       .then((response) => {
         res.status(200).send(response);
       })
@@ -20,7 +20,7 @@ const createConversation = async(req,res)=>{
   const getConversations = async(req,res)=>{
     try {
       const userId = req.user.id  
-      chatHelper.getAllConversationsByUserId(userId)
+      getAllConversationsByUserId(userId)
       .then((response) => {
         res.status(200).send(response);
       })
@@ -35,7 +35,7 @@ const createConversation = async(req,res)=>{
   const addMessage = async(req,res)=>{
     try {
       const {conversationId,senderId,text,recieverId} = req.body
-      chatHelper.addMessage(conversationId,senderId,text,recieverId)
+      _addMessage(conversationId,senderId,text,recieverId)
       .then((response) => {
         res.status(200).send(response);
       })
@@ -52,7 +52,7 @@ const createConversation = async(req,res)=>{
        const {conversationId} = req.params
        console.log(req.params);
        console.log(conversationId);
-      chatHelper.getAllMessages(conversationId)
+      _getAllMessages(conversationId)
       .then((response) => {
         res.status(200).send(response);
       })
@@ -66,7 +66,7 @@ const createConversation = async(req,res)=>{
   const messageReaded= async(req,res)=>{
     try {
        const {conversationId,readerId} = req.params
-      chatHelper.messageReaded(conversationId,readerId)
+      _messageReaded(conversationId,readerId)
       .then((response) => {
         res.status(200).send(response);
       })
@@ -83,7 +83,7 @@ const createConversation = async(req,res)=>{
        const {messageId,type} = req.params
        const userId = req.user.id
        
-      chatHelper.deleteMessage(messageId,type,userId)
+      _deleteMessage(messageId,type,userId)
       .then((response) => {
         res.status(200).send(response);
       })
@@ -95,7 +95,7 @@ const createConversation = async(req,res)=>{
     }
   }
 
-  module.exports={
+  export {
     createConversation,
     getConversations,
     addMessage,

@@ -10,9 +10,9 @@ import socketIo_Config from './src/services/socketIo.js'; // Import socketIo_Con
 
 // Importing Routes
 import userRouter from './src/routes/userRouter.js';
-// import postRouter from './src/routes/postRouter.js';
-// import adminRouter from './src/routes/adminRouter.js';
-// import chatRouter from './src/routes/chatRouter.js';
+import postRouter from './src/routes/postRouter.js';
+import adminRouter from './src/routes/adminRouter.js';
+import chatRouter from './src/routes/chatRouter.js';
 
 
 // MongoDB configuration
@@ -49,9 +49,9 @@ socketIo_Config(io);
 
 // Apply routes
 app.use("/api/users", userRouter);
-// app.use("/api/posts", postRouter);
-// app.use("/api/admin", adminRouter);
-// app.use("/api/chats", chatRouter);
+app.use("/api/posts", postRouter);
+app.use("/api/admin", adminRouter);
+app.use("/api/chats", chatRouter);
 
 app.get('/sample', (req, res) => {
   console.log('health server connected');

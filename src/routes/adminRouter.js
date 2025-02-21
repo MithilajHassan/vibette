@@ -5,8 +5,6 @@ import { protect } from '../middleware/adminAuthMiddleware.js';
 
 
 
-
-
 // @desc    Admin login
 // @route   POST /api/admin/login
 // @access  Public

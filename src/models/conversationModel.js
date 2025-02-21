@@ -1,12 +1,12 @@
 
-const mongoose = require('mongoose');
+import mongoose, { Types } from 'mongoose';
 const { Schema, model } = mongoose;
 
 const conversationSchema = new Schema({
     members: {
         type: [
             {
-                type: mongoose.Types.ObjectId,
+                type: Types.ObjectId,
                 ref: "user"
             }
         ],
@@ -24,4 +24,4 @@ const conversationSchema = new Schema({
 
 
 const Conversation = model('conversation', conversationSchema);
-module.exports= Conversation
+export default Conversation
