@@ -218,7 +218,6 @@ const login = async (email, password) => {
 
       const user = {
         _id: existingUser._id,
-        userName: existingUser.userName,
         email: existingUser.email,
         token: generateToken(existingUser._id, existingUser.role),
         profilePic: existingUser.profilePic,

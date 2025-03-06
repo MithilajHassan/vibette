@@ -8,7 +8,6 @@ const saltRounds = 10; //setting salt rounds
 const verifyOtp = (email, token) => {
   return new Promise((resolve, reject) => {
       try {
-          console.log(email, token);
      
           Verify.findOne({ email: email, token: token })
               .then(async (data) => {

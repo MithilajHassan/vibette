@@ -55,7 +55,7 @@ app.use("/api/chats", chatRouter);
 
 app.get('/sample', (req, res) => {
   console.log('health server connected');
-
+  res.status(201).json({name:'sinaan'})
 })
 
 // Define the listening port

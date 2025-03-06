@@ -26,8 +26,7 @@ const loginnedUser = async (req, res) => {
 
 const userLogin = async (req, res) => {
   try {
-    const { email, password } = req.body
-    console.log(email, password);
+    const { email, password } = req.body        
     login(email, password)
       .then((response) => {
         res.status(200).json({ ...response })
@@ -48,8 +47,6 @@ const userLogin = async (req, res) => {
 // @access  Public
 const sendOTP = async (req, res) => {
   try {
-    console.log('inside the sendOtp');
-    console.log(req.body);
 
     sendVerifyEmail(req.body)
       .then((response) => {
@@ -71,7 +68,6 @@ const verifyOTP = async (req, res) => {
   try {
     const email = req.body.email
     const otp = req.body.otp
-    console.log('OTP:', email, otp);
     verifyEmailOtp(email, otp)
       .then((response) => {
         res.status(200).json(response);
